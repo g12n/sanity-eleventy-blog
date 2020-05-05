@@ -2,13 +2,24 @@ const BlocksToMarkdown = require('@sanity/block-content-to-markdown')
 const groq = require('groq')
 const client = require('../utils/sanityClient.js')
 const serializers = require('../utils/serializers')
+const imageUrl = require('../utils/imageUrl')
 const overlayDrafts = require('../utils/overlayDrafts')
+
+
 const hasToken = !!client.config().token
 
 function generatePost (post) {
+  let url = imageUrl(post.mainImage).width(1500).height(500).format('jpg').url();
+  let headerImage = imageUrl(post.mainImage).width(1500).height(500).format('jpg').url();
+  
+  console.log(url)
   return {
     ...post,
+    imageUrl: url,
+    headerImage: headerImage,
+    imageAlt: post.mainImage.alt,
     body: BlocksToMarkdown(post.body, { serializers, ...client.config() })
+    
   }
 }
 
@@ -19,6 +30,7 @@ async function getPosts () {
     _id,
     publishedAt,
     title,
+    mainImage,
     slug,
     body[]{
       ...,

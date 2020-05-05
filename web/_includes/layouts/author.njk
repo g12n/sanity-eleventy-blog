@@ -6,4 +6,6 @@ templateClass: tmpl-author
 
 {{ author.bio | markdownify | safe }}
 
-<p><a href="{{ '/' | url }}">← Home</a></p>
+<p><a href="{{ '/' | url }}">Home</a></p>
+<div>
+<img src="{{author.image.asset}}" alt="{{author.image.alt}}"/></div>
